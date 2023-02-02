@@ -12,7 +12,7 @@ module.exports = {
     )
     .addNumberOption((option) =>
       option.setName("placement")
-        .setDescription("The placement to add (1, 2, 3)")
+        .setDescription("The placement to add (1st, 2nd, 3rd)")
         .setRequired(true)
         .addChoices(
             {name: "1st", value: 1},
