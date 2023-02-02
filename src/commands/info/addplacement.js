@@ -10,10 +10,15 @@ module.exports = {
         .setDescription("The user to add placement to")
         .setRequired(true)
     )
-    .addIntegerOption((option) =>
+    .addNumberOption((option) =>
       option.setName("placement")
         .setDescription("The placement to add (1, 2, 3)")
         .setRequired(true)
+        .addChoices(
+            {name: "1st", value: 1},
+            {name: "2nd", value: 2},
+            {name: "3rd", value: 3}           
+        )
     ),
 
     async execute(interaction) {
@@ -21,7 +26,7 @@ module.exports = {
         const userId = user.id;
         const username = user.username;
 
-        const placement = parseInt(interaction.options.get("placement"), 10);
+        const placement = Number(interaction.options.get("placement"));
         let points = 0;
         let placementKey = 0;
 
