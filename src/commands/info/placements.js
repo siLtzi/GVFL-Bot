@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const leaderboardModel = require('../../models/leaderboardSchema');
+const leaderboardModel = require('../../models/2023');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("placements")
-    .setDescription("Show the user's placements")
+    .setDescription("Show the user's placements for current season")
     .setDMPermission(false)
     .addUserOption((option) =>
       option.setName("user")
@@ -24,7 +24,7 @@ module.exports = {
       });
     }
 
-    let embed = new EmbedBuilder().setTitle(`Placements for ${username}`).setColor("Green");
+    let embed = new EmbedBuilder().setTitle(`Season 2023 placements for ${username}`).setColor("Green");
     let placements = "";
 
     if (profile.firstPlace) {

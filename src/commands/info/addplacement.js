@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const leaderboardModel = require('../../models/leaderboardSchema');
 const leaderboard2023 = require('../../models/2023');
+const placements = require('./placements');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -43,6 +44,7 @@ module.exports = {
         case 3:
             points = 1;
             placementKey = "third";
+
             break;
         default:
             return interaction.reply({
@@ -70,8 +72,20 @@ module.exports = {
             });
         }
         const profile = await leaderboardModel.findOne({ userID: userId });
+        if (placementKey === "first") {
         return interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("Green")]
+            embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("Yellow")]
         });
+        }
+        else if (placementKey === "second") {
+            return interaction.reply({
+                embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("LightGrey")]
+            });
+        }
+            else if (placementKey === "third") {
+                return interaction.reply({
+                    embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("DarkOrange")]
+                });
+        }
     }
 };

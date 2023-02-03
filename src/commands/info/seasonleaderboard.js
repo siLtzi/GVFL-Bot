@@ -12,7 +12,7 @@ module.exports = {
             .sort({points: -1})
             .catch(err => console.log(err));
 
-        let embed = new EmbedBuilder().setTitle("GVFL 2023 Leaderboard").setColor("Green");
+        let embed = new EmbedBuilder().setTitle("GVFL 2023 Leaderboard").setColor("Yellow");
         let leaderboard = "";
         for (let i = 0; i < 10; i++) {
             if (members[i]) {
