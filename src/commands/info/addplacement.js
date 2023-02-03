@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const leaderboardModel = require('../../models/leaderboardSchema');
+const leaderboard2023 = require('../../models/2023');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,36 +26,50 @@ module.exports = {
         const user = interaction.options.getUser("user");
         const userId = user.id;
         const username = user.username;
-
-        const placement = Number(interaction.options.get("placement"));
+    
+        const placement = Number(interaction.options.getNumber("placement"));
         let points = 0;
         let placementKey = 0;
-
+    
         switch (placement) {
         case 1:
             points = 3;
-            placementKey = 1;
+            placementKey = "first";
             break;
         case 2:
             points = 2;
-            placementKey = 2;
+            placementKey = "second";
             break;
         case 3:
             points = 1;
-            placementKey = 3;
+            placementKey = "third";
             break;
         default:
             return interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`Invalid placement: ${placement}. Placement must be 1, 2, or 3.`).setColor("Red")]
+            embeds: [new EmbedBuilder().setDescription(`Invalid placement: ${placement}. Placement must be 1st, 2nd, or 3rd.`).setColor("Red")]
             });
         }
-
-        const profile = await leaderboardModel.findOneAndUpdate(
-        { userId: userId },
-        { $inc: { [placementKey]: 1, points: points } },
-        { upsert: true, new: true }
-        );
-
+        
+        try {
+            await Promise.all([
+                leaderboardModel.findOneAndUpdate(
+                    { userID: userId },
+                    { $inc: { [placementKey]: 1, points: points, [`${placementKey}Place`]: 1 }, $set: {userName: username } },
+                    { upsert: true, new: true }
+                ),
+                leaderboard2023.findOneAndUpdate(
+                    { userID: userId },
+                    { $inc: { [placementKey]: 1, points: points, [`${placementKey}Place`]: 1 }, $set: {userName: username } },
+                    { upsert: true, new: true }
+                )
+            ]);
+        } catch (error) {
+            console.error(error);
+            return interaction.reply({
+                embeds: [new EmbedBuilder().setDescription(`Error updating leaderboard: ${error}`).setColor("Red")]
+            });
+        }
+        const profile = await leaderboardModel.findOne({ userID: userId });
         return interaction.reply({
             embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("Green")]
         });
