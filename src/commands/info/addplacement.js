@@ -72,19 +72,20 @@ module.exports = {
             });
         }
         const profile = await leaderboardModel.findOne({ userID: userId });
+        const profile2 = await leaderboard2023.findOne({ userID: userId })
         if (placementKey === "first") {
         return interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("Yellow")]
+            embeds: [new EmbedBuilder().setDescription(`🥇 Added ${placement}st placement to ${username}.\n\n \xa0\xa0Total points: ${profile.points}\n\n \xa0\xa0Season 2023 points: ${profile2.points} `).setColor("Yellow")]
         });
         }
         else if (placementKey === "second") {
             return interaction.reply({
-                embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("LightGrey")]
+                embeds: [new EmbedBuilder().setDescription(`🥈 Added ${placement}nd placement to ${username}.\n\n \xa0\xa0Total points: ${profile.points}\n\n \xa0\xa0Season 2023 points: ${profile2.points} `).setColor("LightGrey")]
             });
         }
             else if (placementKey === "third") {
                 return interaction.reply({
-                    embeds: [new EmbedBuilder().setDescription(`Added placement ${placement} to ${username}. Total points: ${profile.points}.`).setColor("DarkOrange")]
+                    embeds: [new EmbedBuilder().setDescription(`🥉 Added ${placement}rd placement to ${username}.\n\n \xa0\xa0Total points: ${profile.points}\n\n \xa0\xa0Season 2023 points: ${profile2.points}`).setColor("DarkOrange")]
                 });
         }
     }

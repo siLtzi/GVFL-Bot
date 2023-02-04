@@ -14,6 +14,19 @@ module.exports = {
     async execute(interaction) {
         let id;
         let username;
+        let userData;
+        try{
+            userData = await leaderboardModel.findOne({ userID: interaction.options.getUser("user").id });
+            if (!userData) {
+                userData = await leaderboardModel.create({
+                userID: interaction.options.getUser("user").id,
+                userName: interaction.options.getUser("user").username
+            });
+        }
+        }  catch(err){
+            console.log(err);
+        }
+
         if (interaction.options.getUser("user")) {
             id = interaction.options.getUser("user").id;
             username = interaction.options.getUser("user").username;
