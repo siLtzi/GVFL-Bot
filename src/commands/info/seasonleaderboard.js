@@ -17,7 +17,7 @@ module.exports = {
             let rank = 1;
             for (let i = 0; i < 10; i++) {
                 if (members[i]) {
-                    if (i > 0 && members[i].points === members[i-1].points) {
+                    if (i > 0 && members[i].points === members[i-1].points && members[i].firstPlace === members[i-1].firstPlace && members[i].secondPlace === members[i-1].secondPlace && members[i].thirdPlace === members[i-1].thirdPlace) {
                         // do not increase the rank if points are equal to previous player's points
                     } else {
                         rank = i + 1;
